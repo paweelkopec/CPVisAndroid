@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">CPVisAndroid</string>
+    <string name="action_settings">Servers</string>
+    <string name="title_activity_server">Servers</string>
+    <string name="title_activity_server_add">New Server</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+    <string name="title_activity_server_edit">Edit Server</string>
+
+</resources>
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_on_test_connection"
+        android:orderInCategory="300"
+        android:title="Test"
+        app:showAsAction="ifRoom|collapseActionView"
+        />
+    <item
+        android:id="@+id/action_on_save"
+        android:orderInCategory="300"
+        android:title="OK"
+        app:showAsAction="ifRoom|collapseActionView"
+        />
+</menu>
