@@ -10,7 +10,7 @@ public class Server {
     private String url;
     private String username;
     private String password;
-    private int listPosition=0;
+    private int listPosition = 0;
 
     public long getId() {
         return id;

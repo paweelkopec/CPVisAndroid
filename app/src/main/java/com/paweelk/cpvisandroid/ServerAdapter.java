@@ -1,13 +1,7 @@
 package com.paweelk.cpvisandroid;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,9 +17,9 @@ import java.util.ArrayList;
 /**
  * Created by Pawel Kopec <paweelkopec@gmail.com> on 19.03.17.
  */
-public class ServerAdapter  extends RecyclerView.Adapter<ServerAdapter.ViewHolder> {
+public class ServerAdapter extends RecyclerView.Adapter<ServerAdapter.ViewHolder> {
 
-    private static final String DEBUG_TAG =  "ServerAdapter";
+    private static final String DEBUG_TAG = "ServerAdapter";
 
     private Context context;
     private ArrayList<Server> serversList;
@@ -47,14 +41,14 @@ public class ServerAdapter  extends RecyclerView.Adapter<ServerAdapter.ViewHolde
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        Log.i(DEBUG_TAG," onBindViewHolder "+position);
+        Log.i(DEBUG_TAG, " onBindViewHolder " + position);
         String name = serversList.get(position).getName();
-        holder.initialName.setText( name );
+        holder.initialName.setText(name);
     }
 
     @Override
     public int getItemCount() {
-        if(this.serversList.isEmpty()){
+        if (this.serversList.isEmpty()) {
             return 0;
         }
         return this.serversList.size();
@@ -73,7 +67,7 @@ public class ServerAdapter  extends RecyclerView.Adapter<ServerAdapter.ViewHolde
                     ((ServerActivity) context).onItemClicked(getAdapterPosition());
                 }
             });
-            itemView.setOnLongClickListener(new View.OnLongClickListener(){
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
 
                 @Override
                 public boolean onLongClick(View v) {
@@ -84,11 +78,11 @@ public class ServerAdapter  extends RecyclerView.Adapter<ServerAdapter.ViewHolde
         }
     }
 
-    public void add(Server server){
+    public void add(Server server) {
         new CreateServerTask().execute(server);
     }
 
-    public void edit(Server server){
+    public void edit(Server server) {
         new UpdateServerTask().execute(server);
     }
 

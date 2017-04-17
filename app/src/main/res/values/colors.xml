@@ -15,4 +15,6 @@
     <item name="teal" type="color">#009688</item>
     <item name="pink" type="color">#e91e63</item>
 
+    <color name="black_overlay">#66000000</color>
+
 </resources>

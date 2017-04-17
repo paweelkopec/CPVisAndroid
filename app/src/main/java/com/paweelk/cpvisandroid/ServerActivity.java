@@ -9,29 +9,31 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
 import com.paweelk.cpvisandroid.model.Server;
 import com.paweelk.cpvisandroid.repositories.ServerRepository;
+
 import java.util.ArrayList;
+
 /**
  * Created by Pawel Kopec <paweelkopec@gmail.com> on 26.03.17.
  */
 public class ServerActivity extends AppCompatActivity {
 
     public ServerRepository serverRepository = new ServerRepository(this);
-    private ArrayList<Server>  serversList;
+    private ArrayList<Server> serversList;
     private ServerAdapter adapter;
     public RecyclerView recyclerView;
-    private static final String DEBUG_TAG ="Server Activity";;
-    public static final String EXTRA_SERVER_NAME ="serverName";
-    public static final String EXTRA_SERVER_URL ="serverUrl";
-    public static final String EXTRA_SERVER_USERNAME ="serverUsername";
-    public static final String EXTRA_SERVER_PASSWORD ="serverPassword";
-    private int positionSelected=-1;
+    private static final String DEBUG_TAG = "Server Activity";
+    public static final String EXTRA_SERVER_NAME = "serverName";
+    public static final String EXTRA_SERVER_URL = "serverUrl";
+    public static final String EXTRA_SERVER_USERNAME = "serverUsername";
+    public static final String EXTRA_SERVER_PASSWORD = "serverPassword";
+    private int positionSelected = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +61,7 @@ public class ServerActivity extends AppCompatActivity {
         return true;
     }
 
-    public boolean onPrepareOptionsMenu(Menu menu)
-    {
+    public boolean onPrepareOptionsMenu(Menu menu) {
         Boolean visible = this.positionSelected >= 0;
         menu.findItem(R.id.action_delete).setVisible(visible);
         menu.findItem(R.id.action_edit).setVisible(visible);
@@ -73,16 +74,16 @@ public class ServerActivity extends AppCompatActivity {
             Server server = serversList.get(this.positionSelected);
             server.setListPosition(this.positionSelected);
             new DeleteServerTask().execute(server);
-            this.positionSelected =-1;
+            this.positionSelected = -1;
             invalidateOptionsMenu();
-        } else if(id == R.id.action_edit){
+        } else if (id == R.id.action_edit) {
             Server server = serversList.get(this.positionSelected);
             server.setListPosition(this.positionSelected);
             Activity act = ServerActivity.this;
-            Intent intent = this.fillAsExtra( new Intent( act, ServerEditActivity.class), server);
+            Intent intent = this.fillAsExtra(new Intent(act, ServerEditActivity.class), server);
             act.startActivityForResult(intent, this.positionSelected);
         }
-        Log.i(DEBUG_TAG,"Kliknięto w menu, pozycja elementu "+ String.valueOf(this.positionSelected));
+        Log.i(DEBUG_TAG, "Kliknięto w menu, pozycja elementu " + String.valueOf(this.positionSelected));
         return super.onOptionsItemSelected(item);
     }
 
@@ -98,7 +99,7 @@ public class ServerActivity extends AppCompatActivity {
         serverRepository.close();
     }
 
-    private Server fillFromExtra(Intent data){
+    private Server fillFromExtra(Intent data) {
         Server server = new Server();
         server.setName(data.getStringExtra(ServerActivity.EXTRA_SERVER_NAME))
                 .setUrl(data.getStringExtra(ServerActivity.EXTRA_SERVER_URL))
@@ -107,7 +108,7 @@ public class ServerActivity extends AppCompatActivity {
         return server;
     }
 
-    private Intent fillAsExtra(Intent intent, Server server){
+    private Intent fillAsExtra(Intent intent, Server server) {
         intent.putExtra(ServerActivity.EXTRA_SERVER_NAME, server.getName());
         intent.putExtra(ServerActivity.EXTRA_SERVER_URL, server.getUrl());
         intent.putExtra(ServerActivity.EXTRA_SERVER_USERNAME, server.getUsername());
@@ -121,28 +122,30 @@ public class ServerActivity extends AppCompatActivity {
         serverRepository.open();
         Log.d(DEBUG_TAG, "request code ma wartość " + requestCode);
         Log.d(DEBUG_TAG, "Liczba itemów w obiekcie adapter ma wartość  " + adapter.getItemCount());
-        if(resultCode != RESULT_OK){
+        if (resultCode != RESULT_OK) {
             return;
         }
         //Add new
-        if (requestCode == adapter.getItemCount() ) {
+        if (requestCode == adapter.getItemCount()) {
             Server server = fillFromExtra(data);
             Log.d(DEBUG_TAG, "Dodanie nowego obiektu server");
             adapter.add(server);
         } else { //Edit
             Server server = fillFromExtra(data);
+            server.setId(serversList.get(requestCode).getId());
             server.setListPosition(requestCode);
             adapter.edit(server);
-            Log.d(DEBUG_TAG, "Edycja obiektu server" + server .toString());
-            this.positionSelected =-1;
+            Log.d(DEBUG_TAG, "Edycja obiektu server" + server.toString());
+            this.positionSelected = -1;
             invalidateOptionsMenu();
+
         }
     }
 
-    public void onItemClicked(int position){
+    public void onItemClicked(int position) {
         this.positionSelected = position;
         invalidateOptionsMenu();
-        Log.d(DEBUG_TAG, "Kliknięto pozycja elementu; "+String.valueOf(position));
+        Log.d(DEBUG_TAG, "Kliknięto pozycja elementu; " + String.valueOf(position));
     }
 
     public void doSmoothScroll(int position) {
@@ -165,11 +168,11 @@ public class ServerActivity extends AppCompatActivity {
         }
     }
 
-    private class  DeleteServerTask extends AsyncTask<Server, Void, Server>{
+    private class DeleteServerTask extends AsyncTask<Server, Void, Server> {
 
         @Override
         protected Server doInBackground(Server... servers) {
-            Log.d(DEBUG_TAG, "Server to remove:  " +servers[0].getId());
+            Log.d(DEBUG_TAG, "Server to remove:  " + servers[0].getId());
             serverRepository.delete(servers[0].getId());
             serversList.remove(servers[0].getListPosition());
             return servers[0];
