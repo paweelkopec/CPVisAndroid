@@ -1,18 +1,16 @@
 package com.paweelk.cpvisandroid;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.paweelk.cpvisandroid.model.Server;
@@ -21,74 +19,74 @@ import com.paweelk.cpvisandroid.repositories.ServerRepository;
 import java.util.ArrayList;
 
 /**
- * Created by Pawel Kopec <paweelkopec@gmail.com> on 19.03.17.
+ * Created by Pawel Kopec <paweelkopec@gmail.com> on 19.04.17.
  */
-public class ServerAdapter  extends RecyclerView.Adapter<ServerAdapter.ViewHolder> {
 
-    private static final String DEBUG_TAG =  "ServerAdapter";
+public class ServerAdapter extends BaseAdapter {
 
-    private Context context;
-    private ArrayList<Server> serversList;
-    private ServerRepository serverRepository;
+    private Context mContext;
+    private static LayoutInflater inflater = null;
+    private ArrayList<Server> mServersList;
+    private ServerRepository mServerRepository;
+    private static final String DEBUG_TAG = "Server Adapter";
 
     public ServerAdapter(Context context, ArrayList<Server> serversList, ServerRepository serverRepository) {
-        this.context = context;
-        this.serversList = serversList;
-        this.serverRepository = serverRepository;
+        // TODO Auto-generated constructor stub
+        mContext =context;
+        mServersList = serversList;
+        mServerRepository = serverRepository;
+
+        inflater = (LayoutInflater) context.
+                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater li = LayoutInflater.from(parent.getContext());
-        View v = li.inflate(R.layout.server_view_holder, parent, false);
-        return new ViewHolder(v);
+    public int getCount() {
+        return mServersList.size();
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-
-        Log.i(DEBUG_TAG," onBindViewHolder "+position);
-        String name = serversList.get(position).getName();
-        holder.initialName.setText( name );
+    public Object getItem(int position) {
+        return mServersList.get(position);
     }
 
     @Override
-    public int getItemCount() {
-        if(this.serversList.isEmpty()){
-            return 0;
+    public long getItemId(int position) {
+        return mServersList.get(position).getId();
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
+        View rowView = inflater.inflate(R.layout.activity_server_row, null);
+        TextView textView = (TextView) rowView.findViewById(R.id.textServerName);
+        LinearLayout layout = (LinearLayout) rowView.findViewById(R.id.serverLayoutRow);
+        if(((ServerActivity) mContext).getPositionSelected() == position){
+            layout.setBackgroundColor(mContext.getResources().getColor(R.color.serverOn) );
         }
-        return this.serversList.size();
-    }
+        textView .setText(mServersList.get(position).getName());
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView initialName;
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            initialName = (TextView) itemView.findViewById(R.id.initialName);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((ServerActivity) context).onItemClicked(getAdapterPosition());
+        //OnClick
+        View.OnClickListener listener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(((ServerActivity) mContext).getPositionSelected() == position ){
+                    ((ServerActivity) mContext).onItemClicked(-1);
+                }else{
+                    ((ServerActivity) mContext).onItemClicked(position);
                 }
-            });
-            itemView.setOnLongClickListener(new View.OnLongClickListener(){
-
-                @Override
-                public boolean onLongClick(View v) {
-                    ((ServerActivity) context).onItemClicked(-1);
-                    return true;
-                }
-            });
-        }
+                notifyDataSetChanged();
+            }
+        };
+        rowView.setOnClickListener(listener );
+        textView.setOnClickListener(listener );
+        return rowView;
     }
-
-    public void add(Server server){
+    public void add(Server server) {
         new CreateServerTask().execute(server);
     }
 
-    public void edit(Server server){
+    public void edit(Server server) {
         new UpdateServerTask().execute(server);
     }
 
@@ -96,16 +94,16 @@ public class ServerAdapter  extends RecyclerView.Adapter<ServerAdapter.ViewHolde
 
         @Override
         protected Server doInBackground(Server... servers) {
-            serverRepository.create(servers[0]);
-            serversList.add(servers[0]);
+            mServerRepository.create(servers[0]);
+            mServersList.add(servers[0]);
             return servers[0];
         }
 
         @Override
         protected void onPostExecute(Server server) {
             super.onPostExecute(server);
-            ((ServerActivity) context).doSmoothScroll(getItemCount() - 1);
-            notifyItemInserted(getItemCount());
+            ((ServerActivity) mContext).doSmoothScroll(getCount() - 1);
+            notifyDataSetChanged();
             Log.d(DEBUG_TAG, "Dodano nowy obiekt serwer do listy:  " + server.toString());
         }
 
@@ -115,20 +113,18 @@ public class ServerAdapter  extends RecyclerView.Adapter<ServerAdapter.ViewHolde
 
         @Override
         protected Server doInBackground(Server... servers) {
-            serverRepository.update(servers[0]);
-            serversList.set(servers[0].getListPosition(), servers[0]);
+            mServerRepository.update(servers[0]);
+            mServersList.set(servers[0].getListPosition(), servers[0]);
             return servers[0];
         }
 
         @Override
         protected void onPostExecute(Server server) {
             super.onPostExecute(server);
-            ((ServerActivity) context).doSmoothScroll(getItemCount() - 1);
-            notifyItemChanged(server.getListPosition());
+            ((ServerActivity) mContext).doSmoothScroll(getCount() - 1);
+            notifyDataSetChanged();
             Log.d(DEBUG_TAG, "Edytowano obiekt serwer:  " + server.toString());
         }
 
     }
-
-
 }

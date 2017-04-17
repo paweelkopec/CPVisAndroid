@@ -1,11 +1,26 @@
 <resources>
-    <string name="app_name">CPVisAndroid</string>
-    <string name="action_settings">Servers</string>
+    <string name="app_name">Visualization Control Panel</string>
+    <string name="action_servers">Servers</string>
+    <string name="action_settings">Settings</string>
     <string name="title_activity_server">Servers</string>
     <string name="title_activity_server_add">New Server</string>
     <string name="action_delete">Delete</string>
     <string name="action_edit">Edit</string>
     <string name="title_activity_server_edit">Edit Server</string>
-
+    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="visualization_view">VISUALIZATION\nVIEW</string>
+    <string name="title_activity_visualization">Visualization View</string>
+    <string name="alert_ok">OK</string>
+    <string name="alert_cancel">Cancel</string>
+    <string name="title_alert_server">Connection error</string>
+    <string name="title_alert_delete">Delete</string>
+    <string name="msg_alert_delete">Are you sure you want to delete server "%s"?</string>
+    <string name="error_file_not_found">File not found: </string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="test_connection_success">Test connection successfully</string>
+    <string name="unit">[ms]</string>
+    <string name="msg_alert_server_list_empyt">Visualization server list is empty. Add new server first</string>
+    <string name="title_alert_configuration">Empty Server List</string>
 </resources>
 

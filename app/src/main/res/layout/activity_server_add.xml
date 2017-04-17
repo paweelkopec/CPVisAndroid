@@ -5,20 +5,22 @@
     android:layout_height="match_parent"
     android:transitionName="fab_transition"
     tools:context=".ServerAddActivity">
+
     <TextView
-        android:text="Enter visualization server details."
+        android:id="@+id/seekBarLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/textView" />
+        android:layout_alignParentTop="true"
+        android:text="Enter visualization server details."
+        android:textSize="18sp" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/seekBarLabel"
         android:layout_alignParentStart="true"
         android:id="@+id/editTextName"
         android:layout_alignParentEnd="true"
