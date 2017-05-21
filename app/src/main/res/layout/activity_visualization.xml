@@ -8,7 +8,6 @@
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-<<<<<<< HEAD
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,18 +35,6 @@
             android:paddingRight="10dp"
             android:src="@android:drawable/ic_media_play" />
     </LinearLayout>
-=======
-    <TextView
-        android:id="@+id/fullscreen_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:keepScreenOn="true"
-        android:text="@string/visualization_view"
-        android:textColor="#33b5e5"
-        android:textSize="50sp"
-        android:textStyle="bold" />
->>>>>>> origin/master
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
@@ -66,16 +53,6 @@
             android:background="@color/black_overlay"
             android:orientation="horizontal"
             tools:ignore="UselessParent">
-
-<<<<<<< HEAD
-=======
-            <ImageView
-                android:id="@+id/imageVisualization"
-                android:layout_width="match_parent"
-                android:layout_height="202dp"
-                android:layout_weight="1"
-                android:src="@android:drawable/ic_media_play" />
->>>>>>> origin/master
         </LinearLayout>
 
     </FrameLayout>
